@@ -9,6 +9,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import './assets/scss/main.scss'
 
+import './mixins'
+
 import Vuelidate from 'vuelidate'
 
 Vue.config.productionTip = false

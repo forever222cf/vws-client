@@ -19,9 +19,15 @@ export default {
 
 <style lang="scss" scoped>
 #app {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 2rem;
   min-height: 100vh;
-  // background-image: url('./assets/images/background.png');
+  background-image: url('./assets/images/cover-01.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

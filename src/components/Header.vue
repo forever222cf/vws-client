@@ -6,7 +6,7 @@
     <div class="vws-header__nav" v-show="showNav">
       <router-link class="vws-header__nav-link" exact-active-class="vws-header__nav-link--active" to="/">Form</router-link>
       <span class="vws-header__nav-separtor">|</span>
-      <router-link class="vws-header__nav-link" exact-active-class="vws-header__nav-link--active" to="/lucky-spin">Lucky Spin</router-link>
+      <router-link class="vws-header__nav-link" exact-active-class="vws-header__nav-link--active" to="/lucky-draw">Lucky Draw</router-link>
     </div>
   </header>
 </template>
@@ -16,7 +16,7 @@ export default {
   name: 'vws-header',
   data () {
     return {
-      showNav: false
+      showNav: true
     }
   }
 }
@@ -25,7 +25,8 @@ export default {
 <style lang="scss" scoped>
 .vws-header {
   &__logo {
-    max-width: 20rem;
+    max-width: 25rem;
+
     @media screen and (max-width: 375px) {
       max-width: 16rem;
     }

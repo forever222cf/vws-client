@@ -15,9 +15,9 @@ const routes = [
     component: lazyLoad('Home')
   },
   {
-    path: '/lucky-spin',
-    name: 'lucky-spin',
-    component: lazyLoad('LuckySpin')
+    path: '/lucky-draw',
+    name: 'lucky-draw',
+    component: lazyLoad('LuckyDraw')
   }
 ]
 

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <VWSForm />
-    <VWSQRCode />
+    <VWSQRCode v-show="false" />
   </div>
 </template>
 

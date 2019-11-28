@@ -1,5 +1,6 @@
 <template>
   <div class="vws-form">
+    <!-- Form -->
     <b-form @submit.stop.prevent="handleSubmit" @reset.stop.prevent="handleReset">
       <b-form-group
         id="input-group-name"
@@ -45,37 +46,57 @@
           :placeholder="placeholder.phone"></b-form-input>
         <b-form-invalid-feedback id="input-phone-feedback">
           <span v-show="!$v.formData.phone.required">This is a required field.</span>
-          <span v-show="!$v.formData.phone.phone">This phone number is not valid.</span>
+          <span v-show="!$v.formData.phone.numeric">This phone number is not valid.</span>
         </b-form-invalid-feedback>
       </b-form-group>
 
       <div class="vws-button__group text-center">
         <b-button class="vws-button" type="submit" size="lg" :variant="$v.formData.$invalid ? 'secondary' : 'primary'" :disabled="$v.formData.$invalid">Submit</b-button>
+        <b-button class="vws-button" size="lg" variant="info" @click="generateData" v-show="showGenerate">Generate</b-button>
         <b-button class="vws-button" type="reset" size="lg" variant="danger" v-show="showReset">Reset</b-button>
       </div>
     </b-form>
+
+    <!-- Modal -->
+    <b-modal
+      id="code-modal"
+      centered
+      hide-footer
+      no-close-on-backdrop
+      title="Thank you! Here is your lucky number"
+      header-class="vws-modal__header"
+      body-class="vws-modal__content"
+      @hidden="clearData">
+      <SlotMachine :code="code" />
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { email, numeric, required } from 'vuelidate/lib/validators'
 import { createCandidate } from '@/services/candidate'
+import { nameArr } from '@/utils/fake'
 
 export default {
   name: 'vws-form',
+  components: {
+    SlotMachine: () => import('./SlotMachine.vue')
+  },
   data () {
     return {
       formData: {
-        name: 'John Doe',
-        email: 'johndoe@gmail.com',
-        phone: '0123456789'
-      },
-      placeholder: {
         name: '',
         email: '',
         phone: ''
       },
-      showReset: true
+      placeholder: {
+        name: 'E.g. John Doe',
+        email: 'E.g. johndoe@gmail.com',
+        phone: 'E.g. 0123456789'
+      },
+      code: '',
+      showReset: false,
+      showGenerate: true
     }
   },
   validations: {
@@ -102,39 +123,69 @@ export default {
       }
       // Save info to db
       createCandidate(this.formData).then(response => {
-        this.$bvToast.toast(response, {
-          title: 'Success',
-          autoHideDelay: 5000
-        })
+        // Update code
+        this.code = response.data.code
+
+        // Show code
+        this.$bvModal.show('code-modal')
       }).catch(error => {
         this.$bvToast.toast(error.response.data.message, {
           title: 'Error',
-          autoHideDelay: 5000
+          variant: 'danger'
         })
       })
     },
+
     handleReset () {
+      this.clearData()
+    },
+
+    clearData () {
       this.formData = {
         name: '',
         email: '',
         phone: ''
       }
-
       this.$v.formData.$reset()
+    },
+
+    generateData () {
+      let radIdx = this.getRandomInt(0, 200)
+      let name = nameArr[radIdx]
+      let email = name.split(' ').join('').toLowerCase() + '@gmail.com'
+      this.formData = {
+        name: name,
+        email: email,
+        phone: '0' + this.getRandomInt(10e7, 10e8)
+      }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .vws-form {
   margin: 0 auto;
-  max-width: 50rem;
+  max-width: 45rem;
 }
 
-.vws-button {
-  + .vws-button {
-    margin-left: 1rem;
+.vws-modal {
+  &__header {
+    position: relative;
+    padding: 1rem 2rem;
+    text-align: center;
+    justify-content: center;
+
+    .close {
+      position: absolute;
+      z-index: 1;
+      top: 1rem;
+      right: 1rem;
+    }
+  }
+  &__content {
+    padding: 2rem 1rem;
+    background-image: linear-gradient(180deg, #6d2077, #d91c57);
   }
 }
 </style>
