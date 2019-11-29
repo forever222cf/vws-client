@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["LuckySpin-vue"],{"339a":function(n,e,t){"use strict";t.r(e);var c=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",{staticClass:"lucky-spin text-center"},[t("VWSSpin")],1)},u=[],i=(t("d3b7"),{name:"lucky-spin",components:{VWSSpin:function(){return t.e("chunk-c916e79a").then(t.bind(null,"3073"))}}}),l=i,s=t("2877"),a=Object(s["a"])(l,c,u,!1,null,null,null);e["default"]=a.exports}}]);
-//# sourceMappingURL=LuckySpin-vue.795e7b42.js.map
