@@ -1,8 +1,9 @@
 <template>
   <div class="vws-list">
     <!-- User Interface controls -->
-    <b-row>
-      <b-col lg="6" class="my-1">
+    <b-row class="mb-3">
+      <b-col lg="6"></b-col>
+      <b-col md="12" lg="6">
         <b-form-group
           label="Filter"
           label-cols-sm="3"
@@ -33,15 +34,8 @@
       stacked="md"
       :items="items"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
       :filter="filter"
-      :filterIncludedFields="filterOn"
-      :sort-by.sync="sortBy"
-      :sort-desc.sync="sortDesc"
-      :sort-direction="sortDirection"
-      :table-busy="isLoading"
-      @filtered="onFiltered">
+      :table-busy="isLoading">
     </b-table>
   </div>
 </template>
@@ -72,34 +66,11 @@ export default {
         }
       ],
       items: [],
-      totalRows: 1,
-      currentPage: 1,
-      perPage: 5,
-      pageOptions: [5, 10, 15],
-      sortBy: '',
-      sortDesc: false,
-      sortDirection: 'asc',
       filter: null,
-      filterOn: [],
       isLoading: true
     }
   },
-  computed: {
-    sortOptions () {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key }
-        })
-    }
-  },
   methods: {
-    onFiltered (filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
-    },
     getList () {
       // Active indicator
       this.isLoading = true
@@ -107,9 +78,6 @@ export default {
       getAllCandidates().then(response => {
         // Update items
         this.items = response.data
-
-        // Set the initial number of items
-        this.totalRows = this.items.length
 
         // Deactive indicator
         this.isLoading = false
