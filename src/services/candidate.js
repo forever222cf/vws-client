@@ -7,7 +7,7 @@ const candidateAPI = {
   getRandomCandidate: `${env.API_SERVER}${env.API.GET_RANDOM_CANDIDATE}`
 }
 
-export const getCandidate = () => {
+export const getAllCandidates = () => {
   return api.get({
     url: candidateAPI.getAllCandidates
   })
