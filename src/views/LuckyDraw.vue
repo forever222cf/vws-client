@@ -3,7 +3,10 @@
     <div class="vws-lucky-draw__wrapper">
       <SlotMachine size="lg" :code="selectedCandidate.code" />
       <div class="vws-button__group text-center">
-        <b-button class="vws-button vws-button--xl" size="lg" variant="success" @click="getRandomCandidate">Draw</b-button>
+        <b-button :class="drawBtnClass" size="lg" variant="success" @click="getRandomCandidate">
+          <span v-if="!isSending">Draw</span>
+          <b-spinner label="Sending..." v-else></b-spinner>
+        </b-button>
         <b-button class="vws-button vws-button--xl" size="lg" variant="info" @click="showCandidateInfo">Show Info</b-button>
       </div>
     </div>
@@ -34,7 +37,16 @@ export default {
   },
   data () {
     return {
-      selectedCandidate: {}
+      selectedCandidate: {},
+      isSending: false
+    }
+  },
+  computed: {
+    drawBtnClass () {
+      return {
+        'vws-button vws-button--xl': true,
+        'vws-button--disabled': this.isSending
+      }
     }
   },
   methods: {
@@ -42,12 +54,17 @@ export default {
       increaseSpinCounter: 'increaseSpinCounter'
     }),
     getRandomCandidate () {
+      // Active indicator
+      this.isSending = true
       getRandomCandidate().then(response => {
         // Update selected candidate
         this.selectedCandidate = response.data
 
         // Increase spinCounter
         this.increaseSpinCounter()
+
+        // Deactive indicator
+        this.isSending = false
       }).catch(error => {
         this.$bvToast.toast(error.response.data.message, {
           title: 'Error',

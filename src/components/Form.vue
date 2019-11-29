@@ -51,7 +51,10 @@
       </b-form-group>
 
       <div class="vws-button__group text-center">
-        <b-button class="vws-button" type="submit" size="lg" :variant="$v.formData.$invalid ? 'secondary' : 'primary'" :disabled="$v.formData.$invalid">Submit</b-button>
+        <b-button :class="submitBtnClass" type="submit" size="lg" :variant="$v.formData.$invalid ? 'secondary' : 'primary'" :disabled="$v.formData.$invalid">
+          <span v-if="!isSending">Submit</span>
+          <b-spinner small label="Sending..." v-else></b-spinner>
+        </b-button>
         <b-button class="vws-button" size="lg" variant="info" @click="generateData" v-show="showGenerate">Generate</b-button>
         <b-button class="vws-button" type="reset" size="lg" variant="danger" v-show="showReset">Reset</b-button>
       </div>
@@ -96,7 +99,16 @@ export default {
       },
       code: '',
       showReset: false,
-      showGenerate: true
+      showGenerate: true,
+      isSending: false
+    }
+  },
+  computed: {
+    submitBtnClass () {
+      return {
+        'vws-button': true,
+        'vws-button vws-button--disabled': this.isSending
+      }
     }
   },
   validations: {
@@ -121,6 +133,10 @@ export default {
       if (this.$v.formData.$anyError) {
         return
       }
+
+      // Active indicator
+      this.isSending = true
+
       // Save info to db
       createCandidate(this.formData).then(response => {
         // Update code
@@ -128,6 +144,9 @@ export default {
 
         // Show code
         this.$bvModal.show('code-modal')
+
+        // Deactive indicator
+        this.isSending = false
       }).catch(error => {
         this.$bvToast.toast(error.response.data.message, {
           title: 'Error',
