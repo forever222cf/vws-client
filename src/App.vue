@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <VWSHeader></VWSHeader>
-    <main>
+    <main class="vws-page">
       <transition name="fade" mode="out-in">
         <router-view/>
       </transition>
@@ -31,7 +31,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  @media screen and (max-width: 375px) {
+
+  @media screen and (max-width: 480px) {
     padding: 2rem 1rem;
   }
 }

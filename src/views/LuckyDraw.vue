@@ -1,11 +1,25 @@
 <template>
   <div class="vws-lucky-draw text-center">
     <div class="vws-lucky-draw__wrapper">
-      <SlotMachine size="lg" :code="code" />
+      <SlotMachine size="lg" :code="selectedCandidate.code" />
       <div class="vws-button__group text-center">
         <b-button class="vws-button vws-button--xl" size="lg" variant="success" @click="getRandomCandidate">Draw</b-button>
+        <b-button class="vws-button vws-button--xl" size="lg" variant="info" @click="showCandidateInfo">Show Info</b-button>
       </div>
     </div>
+    <b-modal
+      id="info-modal"
+      centered
+      hide-footer
+      title="Congratulation!"
+      ok-only>
+      <div class="vws-info">
+        <div class="vws-info__item">Full name: {{ selectedCandidate.name }}</div>
+        <div class="vws-info__item">Email: {{ selectedCandidate.email }}</div>
+        <div class="vws-info__item">Phone: {{ selectedCandidate.phone }}</div>
+        <div class="vws-info__item">Code: {{ selectedCandidate.code }}</div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -20,7 +34,7 @@ export default {
   },
   data () {
     return {
-      code: '0000'
+      selectedCandidate: {}
     }
   },
   methods: {
@@ -29,8 +43,9 @@ export default {
     }),
     getRandomCandidate () {
       getRandomCandidate().then(response => {
-        // Update code
-        this.code = response.data.code
+        // Update selected candidate
+        this.selectedCandidate = response.data
+
         // Increase spinCounter
         this.increaseSpinCounter()
       }).catch(error => {
@@ -39,6 +54,9 @@ export default {
           variant: 'danger'
         })
       })
+    },
+    showCandidateInfo () {
+      this.$bvModal.show('info-modal')
     }
   }
 }
@@ -51,10 +69,18 @@ export default {
   flex-direction: column;
   justify-content: center;
   padding: 2rem;
-  margin: 2rem auto 0;
+  margin: 0 auto;
   max-width: 45rem;
   min-height: 30rem;
   border-radius: 0.5rem;
   background-image: linear-gradient(180deg, #6d2077, #d91c57);
+
+  @media screen and (max-width: 667px) {
+    min-height: 20rem;
+  }
+
+  @media screen and (max-width: 380px) {
+    min-height: 15rem;
+  }
 }
 </style>

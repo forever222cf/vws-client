@@ -27,6 +27,10 @@ export default {
   &__logo {
     max-width: 25rem;
 
+    @media screen and (max-width: 480px) {
+      max-width: 20rem;
+    }
+
     @media screen and (max-width: 375px) {
       max-width: 16rem;
     }

@@ -2,4 +2,13 @@ img {
   max-width: 100%;
 }
 
+.vws-page {
+  margin-top: 2rem;
+  min-height: 30rem;
+
+  @media screen and (max-width: 480px) {
+    min-height: 20rem;
+  }
+}
+
 @import './button.scss';

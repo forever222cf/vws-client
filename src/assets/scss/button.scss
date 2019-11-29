@@ -10,5 +10,14 @@
   &--xl {
     padding: 0.75rem 2rem;
     font-size: 2rem;
+
+    @media screen and (max-width: 667px) {
+      padding: 0.5rem 1rem;
+      font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 380px) {
+      font-size: 1.25rem;
+    }
   }
 }

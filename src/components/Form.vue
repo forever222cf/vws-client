@@ -156,7 +156,7 @@ export default {
       this.formData = {
         name: name,
         email: email,
-        phone: '0' + this.getRandomInt(10e7, 10e8)
+        phone: '0' + this.getRandomInt(1e8, 1e9)
       }
     }
   }

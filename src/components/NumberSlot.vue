@@ -46,6 +46,9 @@ export default {
   },
   methods: {
     changeNumber () {
+      // Clear interval
+      clearInterval(this.intervalObj)
+
       // Start
       this.intervalObj = setInterval(function () {
         this.localNumber = this.getRandomInt(0, 9)
@@ -68,6 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .vws-number-slot {
   display: flex;
   justify-content: center;
@@ -82,6 +86,18 @@ export default {
 
   &--lg {
     font-size: 4rem;
+
+    @media screen and (max-width: 667px) {
+      font-size: 3rem;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: 2.5rem;
+    }
+
+    @media screen and (max-width: 380px) {
+      font-size: 2rem;
+    }
   }
 }
 </style>
