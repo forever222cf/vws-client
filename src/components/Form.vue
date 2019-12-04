@@ -79,6 +79,10 @@
 import { email, numeric, required } from 'vuelidate/lib/validators'
 import { createCandidate } from '@/services/candidate'
 import { nameArr } from '@/utils/fake'
+import axios from 'axios'
+
+const CancelToken = axios.CancelToken
+const source = CancelToken.source()
 
 export default {
   name: 'vws-form',
@@ -99,7 +103,7 @@ export default {
       },
       code: '',
       showReset: false,
-      showGenerate: true,
+      showGenerate: false,
       isSending: false
     }
   },
@@ -127,6 +131,36 @@ export default {
     }
   },
   methods: {
+    handleSubmitWithCancelRequest () {
+      this.$v.formData.$touch()
+      // Validate form
+      if (this.$v.formData.$anyError) {
+        return
+      }
+
+      axios.post('http://localhost:712/candidates/create', this.formData, {
+        cancelToken: source.token
+      }).then(response => {
+        // Update code
+        this.code = response.data.code
+
+        // Show code
+        this.$bvModal.show('code-modal')
+      }).catch(error => {
+        if (axios.isCancel(error)) {
+          console.log('Request canceled', error.message)
+        } else {
+          // handle error
+          this.$bvToast.toast(error.response.data.message, {
+            title: 'Error',
+            variant: 'danger'
+          })
+        }
+      })
+      // Cancel request
+      source.cancel('Operation canceled by the user.')
+    },
+
     handleSubmit () {
       this.$v.formData.$touch()
       // Validate form

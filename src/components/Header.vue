@@ -18,7 +18,7 @@ export default {
   name: 'vws-header',
   data () {
     return {
-      showNav: true
+      showNav: false
     }
   }
 }
