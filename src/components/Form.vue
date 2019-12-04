@@ -148,7 +148,11 @@ export default {
         this.$bvModal.show('code-modal')
       }).catch(error => {
         if (axios.isCancel(error)) {
-          console.log('Request canceled', error.message)
+          // Toast error
+          this.$bvToast.toast(error.message, {
+            title: 'Error',
+            variant: 'danger'
+          })
         } else {
           // handle error
           this.$bvToast.toast(error.response.data.message, {
